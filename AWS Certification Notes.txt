@@ -1,0 +1,10 @@
+AWS Certified CloudOps Engineer - Associate
+AWS Certified CloudOps Engineer - Associate (formerly known as AWS Certified SysOps Administrator - Associate) validates skills and knowledge in monitoring and maintaining AWS workloads, implementing security controls and networking concepts, performing business continuity procedures, and implementing cost and performance optimizations.
+
+
+50% Discount on your next Exam
+AWS Certified Exam Discount Benefit
+Expire Date
+2026-06-24
+Voucher/Code
+AWCM46449933

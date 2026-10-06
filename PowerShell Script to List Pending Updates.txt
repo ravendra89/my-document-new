@@ -1,0 +1,10 @@
+$Session = New-Object -ComObject Microsoft.Update.Session
+$Searcher = $Session.CreateUpdateSearcher()
+$SearchResult = $Searcher.Search("IsInstalled=0 and IsHidden=0")
+
+$SearchResult.Updates | Select-Object Title, KBArticleIDs, MsrcSeverity, IsDownloaded
+
+OR
+
+Get-WindowsUpdate -MicrosoftUpdate
+

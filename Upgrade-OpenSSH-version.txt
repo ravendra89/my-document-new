@@ -1,0 +1,45 @@
+# follow the documents- https://askubuntu.com/questions/1471684/upgrade-openssh-from-v8-9-to-v9-3-on-22-04-2-lts
+
+# open ssh version upgradation-
+1) sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.original
+  sudo chmod a-w /etc/ssh/sshd_config.original
+  
+2)Stop and Remove Existing OpenSSH Service
+
+sudo systemctl stop sshd
+sudo apt-get remove openssh-server openssh-client
+
+3)  Install OpenSSH 9.8
+wget wget https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.8p1.tar.gz
+tar zxvf openssh-9.8p1.tar.gz
+cd openssh-9.8p1
+./configure
+make
+sudo make install
+
+4) Set Up and Start the New SSH Service
+
+sudo nano /etc/systemd/system/sshd.service
+
+Add the following content:
+
+
+[Unit]
+Description=OpenSSH server daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/local/sbin/sshd -D
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+5) sudo systemctl daemon-reload
+sudo systemctl start sshd
+sudo systemctl enable sshd
+6) Rebbot the server
+5) ssh -V
+sudo systemctl status sshd

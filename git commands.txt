@@ -1,0 +1,42 @@
+# Keeps local main updated with remote main branch:
+
+Step 1: Update your local main
+
+Switch to main and pull latest:
+
+git checkout main
+git pull origin main
+
+Now local main matches the remote.
+
+# Makes feature branch based on the latest main branch code
+
+Step 2: Go back to feature branch
+
+git checkout your-feature-branch
+
+Step 3: Bring latest main into feature branch
+
+Option A (not recomended if we dont want to merge feature branch to main branch):
+
+git merge main
+
+Option B:
+
+git fetch origin
+
+git rebase origin
+
+or
+
+git rebase origin main
+
+or
+git rebase origin/main
+
+
+######################################################################################
+# useful commands
+git branch → only local branches
+git branch -r → only remote branches
+git branch -a  → it shows you all branches, both local and remote,

@@ -1,0 +1,72 @@
+SQL Node Preparation:
+ 
+1. Create EC2 instance through terraform
+
+2. Join the windows server to directory service(AD) from ssm
+step is in different note in the same directory
+
+3. install Microsoft Edge
+download and install the Microsoft Edge browser:
+https://learn.microsoft.com/en-us/answers/questions/937532/new-windows-2019-server-how-to-install-microsoft-e
+
+4. install aws cli:  https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+5. Install Sophos - install from ssm document
+
+6. Install Datadog - install from ssm document
+
+only for prod environment
+
+7. Install ARC agent: ARC agent installation script present in the same directory. only we need to change key on that script because every account has different arc key.
+save the script to c drive folder name- arc.ps1
+then open the powershell and go to file location and run this command- .\arc.ps1
+
+Note: Key is available in the jira ticket.
+
+
+8. Change compute name
+Press Windows + I → open Settings
+Go to System → About
+Click Rename this PC
+Enter the new computer name
+Click Next → Restart now
+
+9. Change timezone (EST): Chagne to  EST
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/change-time-zone-of-instance.html
+
+10. Remove IE(Internet explorer): setting -APP - manage opetional feature 
+
+Add new EC2 to Failover Cluster Manager- this is same and old existing member server. we can search failover cluster manager in the server.
+Replica server-search failover cluster- node-add node-browser-SQL-DB-NODE-2 check and select. name will be also same as db name.
+Note: Fail over cluster is installed by DB team. it is available in all the sql server.
+
+
+11. Download notepad++
+
+12. MAKE Disk partition to Online (intilize) and create disk partition drive like- D
+Server manager- file and storage service- Disk
+
+13. Mount the windows server z drive to fsx:
+Import mount-fsx-task to Task Scheduler
+ 
+Run following command for persistent changes
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLinkedConnections" -PropertyType DWORD -Value 1 -Force
+
+###############################################################################################
+To map a file share(fsx) on an Amazon EC2 Windows instance (File Explorer)
+
+https://docs.aws.amazon.com/fsx/latest/WindowsGuide/map-share-windows.html
+https://repost.aws/questions/QUaGjQ0TVOTiGY71DWn0w7gA/mount-fsx-file-system-on-windows-ec2-instance
+
+Check if server is connect with FSx
+open powershell and run the command: net use
+
+14. Add server to required dc server group: 
+group name- stg.ymc.local
+stg - computer
+verify with AD server for another group
+
+go to beta ad manager server server and check if new computer is joined to ad server
+also add computer to required group within ad server.
+
+ 

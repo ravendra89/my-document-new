@@ -1,0 +1,79 @@
+Note: first check where the ym fraud alert site point, cloudflare or waf
+# For Linux:
+
+dig site name
+Ex. dig www.scleoa.org
+OR
+Get only the IP address
+Linux:
+
+dig +short member.myavls.org
+
+# For windows:
+
+Ex. nslookup www.usla.org
+
+if this is pointing to cloudflare we can get this cloudflare ip- 
+ 162.159.141.168
+client.site-ym.com.cdn.cloudflare.net. 300 IN A 172.66.1.164
+
+
+#Cloudflare:
+go to - site-ym-com (prod) - security - analytic - click on event
+filter:
+host - contain - host name
+
+path = equals/donations/donate.asp
+
+http method equals post  # optional
+
+select time - 6 hours - In the Events summary
+
+or 
+
+select particular time for the event.
+click on the highest traffic in the graph - after that it will show the exact time in the time block section.
+then check the Source IP Addresses
+
+
+
+Block the ip-
+Momentive Software - manage account- configuration- then check the block ip list rule.
+but currently, i dont have access.
+
+
+# WAF:
+Note: there is a query available in Athena called 'WAF - Fraud query' that can be used for fraud investigation in AWS WAF. Just need to update the Host to match the site getting hit. It will return the IPs, request counts hitting the donation pages. This should make it easier to track down attacking IPs.
+
+OR
+
+Anthena - save queries - WAF - Requests by host
+
+SELECT
+*
+FROM prod
+CROSS JOIN UNNEST(httprequest.headers) AS t(header)
+WHERE header.name = 'Host'
+  AND header.value like '%members.nerscinc.org'
+  and from_unixtime(timestamp/1000) > now() - interval '4' hour
+  --and action = 'BLOCK'
+  order by timestamp desc
+--LIMIT 1000;
+
+get the host value from the fraud alert from the team - test.org
+change the header value - '%test.org'
+
+DB- prod-waf-alb-db
+
+Note: we can use another save queries base on the requirement.
+
+
+# Block the ip- go to waf - select YM-PROD-ALB
+click on rule name- PROD-IP-Blocklist - click on ip set-  add the fraud ip.
+
+
+# Datadog
+
+We can monitor the fraud alert from the Datadog dashboard: Fraud Prevention
+Note: we have to mention last 4 hours past.
+

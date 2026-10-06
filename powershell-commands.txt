@@ -1,0 +1,80 @@
+1. Add CloudOps Group to Local Administrators
+
+Add-LocalGroupMember -Group "Administrators" -Member "configio.com\CloudOps"
+
+2. Check if VM is a Domain Controller
+
+
+(Get-CimInstance Win32_ComputerSystem).DomainRole
+
+
+3. Remove Domain Services (AD DS)
+If Ops-VM is ONLY a Member Server
+
+Simply remove the AD DS role:
+
+Uninstall-WindowsFeature AD-Domain-Services
+
+Then reboot:
+
+Restart-Computer
+
+
+If Ops-VM IS a Domain Controller
+
+You must DEMOTE it first.
+
+Run:
+
+Uninstall-ADDSDomainController
+
+Follow prompts:
+
+set local Administrator password
+confirm demotion
+
+The VM will reboot automatically.
+
+After reboot, remove AD DS binaries:
+
+Uninstall-WindowsFeature AD-Domain-Services
+
+4. nstall Management Tools Only (RSAT)
+
+Install AD, DNS, and GPO management tools without installing server roles.
+
+Run:
+
+Install-WindowsFeature RSAT-AD-Tools,GPMC,RSAT-DNS-Server
+
+This installs:
+
+Active Directory Users and Computers
+DNS Manager
+Group Policy Management Console
+
+without making the VM a Domain Controller.
+
+5. Verify Installed Tools
+
+Run:
+
+Get-WindowsFeature RSAT*,GPMC
+
+output:
+
+[X] RSAT-AD-Tools
+[X] RSAT-DNS-Server
+[X] GPMC
+
+[X] means installed.
+
+# Quick verification from GUI
+
+Open these commands:
+
+dsa.msc
+dnsmgmt.msc
+gpmc.msc
+
+If done, all 3 commands open successfully

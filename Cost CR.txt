@@ -1,0 +1,21 @@
+Netforum - Need to replace basic sku IP of Virtual Network Gateway in "A&E Netforum Cloud Prod" Subscription
+
+Requesting approval to replace basic sku IP with a standard sku IP since basic sku will be retired in September.
+
+Service Name:
+Virtual Network Gateway
+
+Subscription: A&E Netforum Cloud Prod
+
+Resource group: ECS
+
+Virtual network gateway name: vpn_ecs
+
+Public IP name: pip_vpn_ecs
+
+Current SKU Type: Basic SKU
+
+Required SKU Type: Standard SKU
+
+Cost Impact(Increase): $4 per month
+

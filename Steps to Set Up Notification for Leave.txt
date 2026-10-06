@@ -1,0 +1,46 @@
+# Steps to Set Up Notification for Leave:
+Step 1:
+Open the calendar in email.
+
+Select the leave date on the calendar.
+
+Click on "New Items" and then select "Meeting."
+
+Set the title to "Name - PPTO"
+
+Required: Team member's name or email ID.
+
+Remove all content from the dropdown (e.g., Microsoft Teams, etc.).
+
+Remove the location content and mention "OOO" (Out of Office).
+
+Click on "Response Options" and uncheck Request_Responses
+
+show as- should be free
+
+
+Reminder time - None
+
+Click "Send."
+
+Step 2:
+Open the calendar in your email.
+
+Select the leave date on the calendar.
+
+Click on "New Items" and then select "Meeting."
+
+Set the title to "Name - PPTO."
+
+Required field- Name (Ravendra tiwari) or Email id
+
+
+In the "Show As" field, select "Out of Office."
+
+Remove all content from the dropdown (e.g., Microsoft Teams, etc.).
+
+Remove the location content and mention "OOO" (Out of Office).
+
+Click "Send."
+
+Now it's done.

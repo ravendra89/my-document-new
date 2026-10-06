@@ -1,0 +1,11 @@
+dnf update kernel --releasever 2023.4.20240416
+dnf update kernel --releasever 2023.4.20240429
+dnf update kernel --releasever 2023.4.20240513
+dnf update kernel --releasever 2023.4.20240611
+dnf update kernel --releasever 2023.5.20240624
+
+dnf update openssl --releasever 2023.4.20240611
+
+dnf update sssd --releasever 2023.5.20240624
+
+dnf update python-jinja2 --releasever 2023.5.20240624

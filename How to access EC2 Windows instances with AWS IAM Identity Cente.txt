@@ -1,0 +1,6 @@
+# Configure user access with the default IAM Identity Center directory
+https://docs.aws.amazon.com/singlesignon/latest/userguide/quick-start-default-idc.html
+
+# How to enable secure seamless single sign-on to Amazon EC2 Windows instances with AWS IAM Identity Center
+
+https://aws.amazon.com/blogs/security/how-to-enable-secure-seamless-single-sign-on-to-amazon-ec2-windows-instances-with-aws-sso/

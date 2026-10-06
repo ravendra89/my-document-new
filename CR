@@ -1,0 +1,31 @@
+YM - Prod - Resolve Vulnerabilities - APP-AVS Instance
+
+
+
+As per the findings from the recent vulnerability assessment, we need to remediate the identified vulnerabilities on the following EC2 instance:
+
+EC2 Instance IDs:
+
+i-06e870fbd07cfc2be (MMS-PROD-APP-AVS-01C-3453)
+
+
+To address these findings, we will be performing OS patching on the affected instance. Please note that a reboot is required to complete the patching process successfully.
+
+We will coordinate the necessary changes with the R&D team to ensure minimal disruption.
+
+Let me know if you have any questions or concerns.
+
+
+
+
+
+
+
+
+
+
+
+
+I will apply the OS patch manually to the listed instances.
+
+ I have already completed the patching in the lower environment.

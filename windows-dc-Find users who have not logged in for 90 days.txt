@@ -1,0 +1,6 @@
+Find users who have not logged in for 90 days:
+
+$Date = (Get-Date).AddDays(-90)
+
+Search-ADAccount -UsersOnly -AccountInactive -TimeSpan 90.00:00:00 |
+Select Name,SamAccountName,LastLogonDate

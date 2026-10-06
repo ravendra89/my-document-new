@@ -1,0 +1,41 @@
+# Make owner of the public Github repository:
+1. Create a new empty repo on GitHub
+
+2. Go to your cloned repo locally
+
+3. Remove original remote:
+git remote -v
+git remote remove origin
+
+4. Add your GitHub repo as origin:
+git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
+
+5. Verify to remote repo:
+
+git remote -v
+
+6. Optional: Remove original history
+
+If you want fresh commit history:
+
+rm -rf .git
+git init
+git add .
+git commit -m "Initial commit"
+
+
+7. Push everything to your repo
+
+Check branch name:
+
+git branch
+
+
+If it’s master, rename to main (recommended):
+
+git branch -M main
+
+
+Push:
+
+git push -u origin main
