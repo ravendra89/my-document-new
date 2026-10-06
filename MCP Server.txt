@@ -1,0 +1,196 @@
+what is MCP Server?
+
+An MCP server is a server that implements the Model Context Protocol (MCP), an open protocol that lets AI assistants (like ChatGPT, Claude, or other LLM-based applications) securely connect to external tools, data sources, and services in a standardized way.
+
+Think of it like this:
+
+Without MCP: Every AI application needs a custom integration for Google Drive, GitHub, Slack, databases, etc.
+
+With MCP: Each service exposes an MCP server, and any MCP-compatible AI client can connect to it using the same protocol.
+
+what is aws MCP Server?
+
+AWS MCP Server is AWS's official implementation of the Model Context Protocol that lets an AI coding agent interact with your AWS account and AWS services using natural language.
+
+the AWS MCP Server, a managed remote Model Context Protocol (MCP) server that gives AI agents and coding assistants secure, authenticated access to all AWS services through a small, fixed set of tools.
+
+The AWS MCP Server is part of the Agent Toolkit for AWS, a suite of tooling that includes the MCP Server, skills, and plugins that help coding agents build more effectively and efficiently on AWS.
+
+What are MCP Server Tools?
+
+Tools are the individual functions that an MCP server exposes to Claude. When you connect an MCP server, Claude can "call" these tools — like calling a function — to get data or perform actions.
+
+Think of it this way:
+
+MCP Server = a plugin
+MCP Tool = a specific button/function inside that plugin
+
+How a Tool Works:
+
+User asks Claude: "Which of my CloudWatch alarms are currently in the ALARM state?"
+
+Claude → calls tool: get_metric_data / describe_alarms
+       → MCP server executes the AWS API call
+       → returns result to Claude
+       → Claude answers to the user
+######################################################################################################################
+# AWS documents
+https://docs.aws.amazon.com/agent-toolkit/latest/userguide/what-is-agent-toolkit.html
+
+# AWS MCP repository:
+
+https://github.com/awslabs/mcp
+
+Note: For any other Datasources without a dedicated server, the AWS MCP Server (managed remote) is the recommended single entry point — it covers every AWS API, has zero credential exposure, and logs everything to CloudTrail. It supersedes the generic aws-api-mcp-server.
+
+
+# AWS MCP Server = Managed Remote Server
+
+It's a single hosted server run by AWS at this endpoint:
+
+https://aws-mcp.us-east-1.api.aws/mcp
+
+AWS MCP Server (managed remote) — simplest
+
+Add it to mcp.json and Claude can call any API directly:
+
+json
+{
+  "mcpServers": {
+    "aws-mcp": {
+      "type": "http",
+      "url": "https://aws-mcp.us-east-1.api.aws/mcp"
+    }
+  }
+}
+
+Note: we have to use Managed Remote Server if dedicated mcp server is not available because awslabs.aws-api-mcp-server (local CLI wrapper) is deprecated as of July 15, 2026 — removed July 15, 2027. Use the Managed Remote instead.
+
+
+##################################################################################################################################################################################
+# what is Local and Remote MCP Servers 
+# Local MCP Server = runs on our laptop
+
+You install it (uvx awslabs.cloudwatch-mcp-server@latest)
+Claude starts it as a background process
+It calls AWS using your local credentials (~/.aws/credentials)
+Transport: stdio (stdin/stdout between Claude and the process)
+
+{
+  "mcpServers": {
+    "awslabs.cloudwatch-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.cloudwatch-mcp-server@latest"],
+      "env": {
+        "AWS_PROFILE": "my-profile",
+        "AWS_REGION": "us-east-1"
+      }
+    }
+  }
+}
+
+# How it works: Claude → starts process locally → process calls AWS APIs using your local credentials → returns results to Claude
+
+# Characteristics:
+
+Requires uv/Python installed locally
+Uses your local ~/.aws/credentials or IAM role
+Process starts and stops with your MCP client
+Network calls go directly from your machine to AWS
+You control the version (@latest or pin to specific version)
+
+# Remote MCP Server = runs on someone else's server
+
+Hosted on a server (AWS's infrastructure, or any URL). Claude connects over HTTP/HTTPS using Streamable HTTP transport.
+
+{
+  "mcpServers": {
+    "aws-mcp": {
+      "type": "http",
+      "url": "https://aws-mcp.us-east-1.api.aws/mcp"
+    }
+  }
+}
+
+How it works: Claude → HTTPS request to remote server → server calls AWS APIs → returns results to Claude
+
+# Characteristics:
+
+No local install needed
+Auth via SigV4 (AWS credentials sent in request headers)
+Always up-to-date — AWS manages the version
+CloudTrail logging included (AWS audits all calls)
+Your credentials are never stored on the remote server
+
+# When to use Local vs Remote MCP Servers?
+MCP servers can be run either locally on your development machine or remotely on the cloud. Here's when to use each approach:
+
+Local MCP Servers:
+Development & Testing: Perfect for local development, testing, and debugging
+Offline Work: Continue working when internet connectivity is limited
+Data Privacy: Keep sensitive data and credentials on your local machine
+Low Latency: Minimal network overhead for faster response times
+Resource Control: Direct control over server resources and configuration
+
+Remote MCP Servers:
+
+Team Collaboration: Share consistent server configurations across your team
+Resource Intensive Tasks: Offload heavy processing to dedicated cloud resources
+Always Available: Access your MCP servers from anywhere, any device
+Automatic Updates: Get the latest features and security patches automatically
+Scalability: Easily handle varying workloads without local resource constraints
+Security: Centralized security controls with IAM-based permissions and zero credential exposure
+Governance: Comprehensive audit logging and compliance monitoring for enterprise-grade governance
+Note: Some MCP servers, like the official AWS MCP server (in preview) and AWS Knowledge MCP, are provided as fully managed services by AWS. These AWS-managed remote servers require no setup or infrastructure management on your part - just connect and start using them.
+
+Use Cases for the Servers
+For example, you can use the AWS Documentation MCP Server to help your AI assistant research and generate up-to-date code for any AWS service, like Amazon Bedrock Inline agents. Alternatively, you could use the CDK MCP Server or the Terraform MCP Server to have your AI assistant create infrastructure-as-code implementations that use the latest APIs and follow AWS best practices. With the AWS Pricing MCP Server, you could ask "What would be the estimated monthly cost for this CDK project before I deploy it?" or "Can you help me understand the potential AWS service expenses for this infrastructure design?" and receive detailed cost estimations and budget planning insights. The Valkey MCP Server enables natural language interaction with Valkey data stores, allowing AI assistants to efficiently manage data operations through a simple conversational interface.
+
+Installation and Setup
+Each server has specific installation instructions with one-click installs for Kiro, Cursor, and VSCode. Generally, you can:
+
+Install uv from Astral
+Install Python using uv python install 3.10
+Configure AWS credentials with access to required services
+Add the server to your MCP client configuration
+Example configuration for Kiro MCP settings (~/.kiro/settings/mcp.json):
+
+For macOS/Linux
+{
+  "mcpServers": {
+    "awslabs-core-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.core-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    }
+  }
+}
+See individual server READMEs for specific requirements and configuration options.
+
+For Windows
+When configuring MCP servers on Windows, you'll need to use a slightly different configuration format:
+
+{
+  "mcpServers": {
+    "awslabs-core-mcp-server": {
+      "disabled": false,
+      "timeout": 60,
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "tool",
+        "run",
+        "--from",
+        "awslabs.core-mcp-server@latest",
+        "awslabs.core-mcp-server.exe"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    }
+  }
+}

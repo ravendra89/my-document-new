@@ -1,0 +1,11 @@
+# What is Claude?
+
+Claude is an Claude is an AI tool/AI assistant made by Anthropic. It can help with writing, analysis, coding, debug code, research, math, brainstorming, solve problems and general questions — essentially a wide range of text-based tasks.
+
+It’s similar to ChatGPT.
+
+# Anthropic:
+Anthropic is the AI safety company that created Claude. Founded in 2021, their focus is building AI systems that are safe and beneficial.
+
+# Cowork: 
+Cowork is a desktop app made by Anthropic that lets you use Claude to automate file and task management on your computer — things like organizing files, generating documents, running research, and building workflows. It gives Claude direct access to your local files and a shell environment to do real work on your behalf. It's currently in research preview.

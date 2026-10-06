@@ -1,0 +1,5 @@
+# What is AI?
+
+AI stands for Artificial Intelligence.
+
+In simple words, AI is technology that allows computers to perform tasks that normally require human intelligence.

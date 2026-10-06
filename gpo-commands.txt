@@ -1,0 +1,11 @@
+1. Generates a Group Policy Results report:
+
+gpresult /H "C:\Users\ravendra.tiwari\Desktop\newResults.html"
+
+2. Generates a Group Policy Results report and /f is used to overwrite the existing file forcefully.
+
+gpresult /H "C:\Users\ravendra. (B37E18A0)\Desktop\newResults.html" /f
+
+3. Apply the group policy forcefully
+
+gpupdate /force

@@ -1,0 +1,168 @@
+# VS Code Integration with Claude
+# Prerequisites for Claude Code on Windows (VS Code)
+
+1. Node.js (v18+)
+
+Download & install from: https://nodejs.org (LTS version)
+
+Verify:
+
+powershell
+node --version
+npm --version
+
+# Note:
+Node.js = the engine that runs JavaScript outside the browser
+
+npm = the package manager that comes with Node.js, used to install JavaScript packages/tools
+
+Install Node.js → you automatically get npm
+
+# But why we are installing Node.js (v18+)
+
+Because Claude Code is built with JavaScript/Node.js — it needs Node.js to run.
+
+
+2. Python
+
+Download from: https://python.org (3.10+ recommended)
+
+✅ During install — check "Add Python to PATH"
+
+Verify:
+
+python --version
+
+
+# Install uv (Important)
+
+pip install uv
+
+add uv to PATH:
+
+$env:PATH += ";C:\Users\RavendraTiwari\AppData\Local\Python\pythoncore-3.14-64\Scripts"
+
+
+uvx --version
+
+
+
+Note: uv is a modern Python package manager — much faster than pip.
+
+3. AWS CLI
+
+Download from: https://aws.amazon.com/cli/
+
+Verify & configure:
+
+powershell
+aws --version
+aws configure
+
+4. Git
+
+Download from: https://git-scm.com
+
+Verify:
+
+powershell
+git --version
+
+5. VS Code
+
+Download from: https://code.visualstudio.com
+
+6. Claude Code (after Node is installed)
+
+powershell/terminal:
+npm install -g @anthropic-ai/claude-code
+
+claude --version
+
+# Note:
+You don't NEED to install Claude Code if:
+You only want to chat with Claude via the desktop app
+You don't need it to read/edit your code files directly
+
+You DO need Claude Code if:
+You want Claude inside VS Code terminal
+You want Claude to read, write, edit files in your project
+You want Claude to run commands (terraform, AWS CLI, etc.) on your behalf
+
+
+
+7. Login to Claude Code (Launch inside VS Code)
+terminal: claude
+
+This opens Claude in your VS Code terminal with full awareness of your codebase.
+
+Or 
+use the VS Code extension:
+Open Extensions (Ctrl+Shift+X)
+Search "Claude Code"
+Install and sign in with your Anthropic account
+
+
+1.  Choose the text style that looks best with our terminal:  Dark mode 
+change this later, run /theme
+
+2. Select option 1 (Claude account with subscription)
+
+3. Browser opens → sign in with your claude.ai account
+
+5. go back to terminal and press enter to continue
+
+6. select use a recommended setting
+
+7.  Quick safety check: Is this a project you created or one you trust? (Like your own code, a well-known open source project, or
+ work from your team). If not, take a moment to review what's in this folder first.
+
+ Claude Code'll be able to read, edit, and execute files here.
+
+select Yes, I trust this folder
+
+
+8. Open the config file
+
+Press Win + R → type:
+
+%LOCALAPPDATA%\Claude
+
+Open or create claude_desktop_config.json
+
+
+create using powershell:
+
+New-Item "$env:LOCALAPPDATA\Claude\claude_desktop_config.json" -ItemType File
+
+Replace everything with the following json script (this script will be different for another mcp server):
+
+{
+  "mcpServers": {
+    "terraform": {
+      "command": "uvx",
+      "args": ["hashicorp/terraform-mcp-server@latest"]
+    }
+  }
+}
+
+
+
+Note: The following core AWS MCP Server is deprecated. we should install specific MCP servers directly.
+
+awslabs.core-mcp-server
+
+
+
+# Example specific MCP servers directly:
+
+Goal	                                  MCP Server
+Create EC2, VPC, S3 via Terraform	  awslabs.terraform-mcp-server
+Create via AWS CDK	                  awslabs.cdk-mcp-server
+Create via CloudFormation	          awslabs.cfn-mcp-server
+Direct S3 operations	             awslabs.s3-mcp-server
+DynamoDB operations	                awslabs.amazon-dynamodb-mcp-server
+
+
+
+
